@@ -55,6 +55,9 @@ endif
 if HAVE_LIBC_SYS_SYSVNECV70_DIR
 include %D%/sysvnecv70/Makefile.inc
 endif
+if HAVE_LIBC_SYS_TEXTOS_DIR
+include %D%/textos/Makefile.inc
+endif
 if HAVE_LIBC_SYS_TIC80_DIR
 include %D%/tic80/Makefile.inc
 endif

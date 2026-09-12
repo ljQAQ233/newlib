@@ -1741,7 +1741,7 @@ case $os in
 	     | uxpv* | beos* | mpeix* | udk* | moxiebox* \
 	     | interix* | uwin* | mks* | rhapsody* | darwin* \
 	     | openstep* | oskit* | conix* | pw32* | nonstopux* \
-	     | storm-chaos* | tops10* | tenex* | tops20* | its* \
+	     | storm-chaos* | textos* | tops10* | tenex* | tops20* | its* \
 	     | os2* | vos* | palmos* | uclinux* | nucleus* | morphos* \
 	     | scout* | superux* | sysv* | rtmk* | tpf* | windiss* \
 	     | powermax* | dnix* | nx6 | nx7 | sei* | dragonfly* \

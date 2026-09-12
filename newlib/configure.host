@@ -564,6 +564,10 @@ case "${host}" in
 	default_newlib_io_long_long="yes"
 	default_newlib_atexit_dynamic_alloc="no"
 	;;
+  *-*-textos)
+	sys_dir=textos
+	have_crt0="no"
+	;;
   tic6x*)
 	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES"
 	have_crt0="no"
@@ -878,6 +882,9 @@ newlib_cflags="${newlib_cflags} -DCLOCK_PROVIDED -DMALLOC_PROVIDED -DEXIT_PROVID
   w65-*-*)
 	syscall_dir=syscalls	
 	newlib_cflags="${newlib_cflags} -DSMALL_DTOA -DSMALL_MEMORY"
+	;;
+  *-*-textos)
+	syscall_dir=syscalls
 	;;
   xc16x-*)
           syscall_dir=syscalls
