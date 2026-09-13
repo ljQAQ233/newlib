@@ -50,17 +50,6 @@
 /* ioctl request for isatty, must match textos <bits/ioctl.h>.  */
 #define TIOCGWINSZ 0x5413
 
-/* textos open(2) flag values, from <bits/fcntl.h>.  These are *not* the
-   same bit layout as newlib's O_* constants, so open flags must be
-   translated.  */
-#define T_O_CREAT 0x40        /* 0100  */
-#define T_O_EXCL 0x80         /* 0200  */
-#define T_O_TRUNC 0x200       /* 01000 */
-#define T_O_APPEND 0x400      /* 02000 */
-#define T_O_NONBLOCK 0x800    /* 04000 */
-#define T_O_DIRECTORY 0x20000 /* 0200000 */
-#define T_O_NOFOLLOW 0x40000  /* 0400000 */
-
 static inline long
 __syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)
 {
@@ -134,53 +123,6 @@ _textos_to_newlib_stat(const struct _textos_stat* ks, struct stat* st)
   st->st_ctim.tv_sec = ks->ctime;
 }
 
-/* Translate newlib O_* flags to textos' open flag bit layout.  textos has
-   no equivalent for O_CLOEXEC/O_NOCTTY/O_SYNC/O_DIRECT, so those are
-   silently dropped (textos' exec does not implement close-on-exec).  */
-static int
-_textos_openflags(int flags)
-{
-  int t = flags & O_ACCMODE;
-
-  if (flags & O_CREAT)
-    t |= T_O_CREAT;
-  if (flags & O_EXCL)
-    t |= T_O_EXCL;
-  if (flags & O_TRUNC)
-    t |= T_O_TRUNC;
-  if (flags & O_APPEND)
-    t |= T_O_APPEND;
-  if (flags & O_NONBLOCK)
-    t |= T_O_NONBLOCK;
-  if (flags & _FDIRECTORY)
-    t |= T_O_DIRECTORY;
-  if (flags & _FNOFOLLOW)
-    t |= T_O_NOFOLLOW;
-  return t;
-}
-
-static int
-_newlib_openflags(int t)
-{
-  int flags = t & 3; /* O_RDONLY/O_WRONLY/O_RDWR */
-
-  if (t & T_O_CREAT)
-    flags |= O_CREAT;
-  if (t & T_O_EXCL)
-    flags |= O_EXCL;
-  if (t & T_O_TRUNC)
-    flags |= O_TRUNC;
-  if (t & T_O_APPEND)
-    flags |= O_APPEND;
-  if (t & T_O_NONBLOCK)
-    flags |= O_NONBLOCK;
-  if (t & T_O_DIRECTORY)
-    flags |= _FDIRECTORY;
-  if (t & T_O_NOFOLLOW)
-    flags |= _FNOFOLLOW;
-  return flags;
-}
-
 _READ_WRITE_RETURN_TYPE
 _read(int fd, void* buf, size_t cnt)
 {
@@ -203,8 +145,7 @@ _open(const char* name, int flags, ...)
   mode = va_arg(ap, int);
   va_end(ap);
 
-  return __sysret(
-    __syscall3(SYS_open, (long)name, _textos_openflags(flags), mode));
+  return __sysret(__syscall3(SYS_open, (long)name, flags, mode));
 }
 
 int
@@ -335,18 +276,12 @@ _fcntl(int fd, int cmd, ...)
 {
   int arg;
   va_list ap;
-  long r;
 
   va_start(ap, cmd);
   arg = va_arg(ap, int);
   va_end(ap);
 
-  r = __sysret(__syscall3(SYS_fcntl, fd, cmd, arg));
-  if (r < 0)
-    return r;
-  if (cmd == F_GETFL)
-    return _newlib_openflags((int)r);
-  return r;
+  return __sysret(__syscall3(SYS_fcntl, fd, cmd, arg));
 }
 
 int
