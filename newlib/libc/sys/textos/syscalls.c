@@ -1,5 +1,6 @@
-/*
- * System call stubs for the textos operating system.
+/**
+ * @file
+ * @brief System call stubs for the textos operating system.
  *
  * textos exposes a Linux x86_64 compatible syscall ABI (the `syscall`
  * instruction, syscall number in %rax, args in %rdi/%rsi/%rdx/%r10/%r8/%r9,
@@ -9,6 +10,8 @@
  *
  * These are the non-reentrant (_-prefixed) primitives that newlib's
  * reentrant layer (libc/reent) and connectors (libc/syscalls) build on.
+ *
+ * @author deepseek-v4-flash
  */
 
 #include <_ansi.h>
@@ -17,11 +20,13 @@
 #include <reent.h>
 #include <stdarg.h>
 #include <string.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/times.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <termios.h>
 #include <unistd.h>
 
 /* textos syscall numbers (Linux x86_64 compatible).  */
@@ -46,9 +51,6 @@
 #define SYS_gettimeofday 96
 #define SYS_times 100
 #define SYS_time 201
-
-/* ioctl request for isatty, must match textos <bits/ioctl.h>.  */
-#define TIOCGWINSZ 0x5413
 
 static inline long
 __syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)
@@ -193,6 +195,51 @@ _isatty(int fd)
   } wsz;
 
   return __sysret(__syscall3(SYS_ioctl, fd, TIOCGWINSZ, (long)&wsz)) == 0;
+}
+
+int
+ioctl(int fd, int req, ...)
+{
+  va_list ap;
+  void* arg;
+
+  va_start(ap, req);
+  arg = va_arg(ap, void*);
+  va_end(ap);
+
+  return __sysret(__syscall3(SYS_ioctl, fd, req, (long)arg));
+}
+
+int
+tcgetattr(int fd, struct termios* tio)
+{
+  return __sysret(__syscall3(SYS_ioctl, fd, TCGETS, (long)tio));
+}
+
+int
+tcsetattr(int fd, int act, const struct termios* tio)
+{
+  if (act < TCSANOW || act > TCSAFLUSH) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  return __sysret(__syscall3(SYS_ioctl, fd, TCSETS + act, (long)tio));
+}
+
+int
+tcsetpgrp(int fd, pid_t pgrp)
+{
+  return __sysret(__syscall3(SYS_ioctl, fd, TIOCSPGRP, (long)&pgrp));
+}
+
+pid_t
+tcgetpgrp(int fd)
+{
+  pid_t pgrp;
+  long r = __sysret(__syscall3(SYS_ioctl, fd, TIOCGPGRP, (long)&pgrp));
+
+  return r < 0 ? (pid_t)-1 : pgrp;
 }
 
 void*
