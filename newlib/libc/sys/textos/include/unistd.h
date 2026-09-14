@@ -1,5 +1,12 @@
-/* textos override: Linux sysconf values, matching textos <unistd.h>.
-   The declarations are kept from newlib's <sys/unistd.h>.  */
+/**
+ * @file
+ * @brief textos override: Linux sysconf values.
+ *
+ * Match textos <unistd.h>.  The declarations are kept from newlib's
+ * <sys/unistd.h>.
+ *
+ * @author deepseek-v4-flash
+ */
 
 #include <sys/unistd.h>
 

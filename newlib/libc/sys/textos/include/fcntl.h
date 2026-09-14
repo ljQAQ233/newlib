@@ -1,9 +1,15 @@
-/* textos override: Linux open(2)/fcntl(2) flag values, matching the
-   textos kernel.  newlib's own values (BSD derived) do not agree with
-   the Linux ABI that textos implements.
-
-   The rest of <sys/fcntl.h> (struct flock, AT_* flags, ...) is kept from
-   newlib.  */
+/**
+ * @file
+ * @brief textos override: Linux open(2)/fcntl(2) flag values.
+ *
+ * Match the textos kernel.  newlib's own values (BSD derived) do not
+ * agree with the Linux ABI that textos implements.
+ *
+ * The rest of <sys/fcntl.h> (struct flock, AT_* flags, ...) is kept from
+ * newlib.
+ *
+ * @author deepseek-v4-flash
+ */
 
 #include <sys/fcntl.h>
 

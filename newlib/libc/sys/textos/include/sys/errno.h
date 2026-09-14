@@ -1,9 +1,16 @@
-/* textos override: use the Linux errno numbering, matching the textos
-   kernel and its <bits/errno.h>.  newlib's own numbering (BSD/SVR4
-   derived) does not agree with the Linux ABI that textos implements.
-
-   The errno variable plumbing is kept from newlib's <sys/errno.h>; only
-   the numeric values come from <bits/errno.h>.  */
+/**
+ * @file
+ * @brief textos override: Linux errno numbering.
+ *
+ * Match the textos kernel and its <bits/errno.h>.  newlib's own numbering
+ * (BSD/SVR4 derived) does not agree with the Linux ABI that textos
+ * implements.
+ *
+ * The errno variable plumbing is kept from newlib's <sys/errno.h>; only
+ * the numeric values come from <bits/errno.h>.
+ *
+ * @author deepseek-v4-flash
+ */
 
 #ifndef _SYS_ERRNO_H_
 #ifdef __cplusplus

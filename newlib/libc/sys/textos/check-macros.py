@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+##
+# @file
+# @brief Compare macros defined by both the textos and newlib C libraries.
+# @author deepseek-v4-flash
+##
+
 """Compare macros defined by both the textos and newlib C libraries.
 
 For every object-like macro that both header sets define, the macro is

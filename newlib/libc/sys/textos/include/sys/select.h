@@ -1,3 +1,13 @@
+/**
+ * @file
+ * @brief textos <sys/select.h>, adapted from newlib.
+ *
+ * FD_SETSIZE is set to the textos value (1024); the rest is kept from
+ * newlib's <sys/select.h>.
+ *
+ * @author deepseek-v4-flash
+ */
+
 #ifndef _SYS_SELECT_H
 #define _SYS_SELECT_H
 

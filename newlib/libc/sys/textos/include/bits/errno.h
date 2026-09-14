@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @brief textos errno constants (Linux numbering), copied from the textos
+ *        source tree.
+ *
+ * @author deepseek-v4-flash
+ */
+
 #define EPERM            1
 #define ENOENT           2
 #define ESRCH            3

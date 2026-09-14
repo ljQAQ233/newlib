@@ -1,6 +1,12 @@
-/* textos override: Linux signal numbers, matching the textos kernel and
-   its <bits/signal.h>.  The declarations are kept from newlib's
-   <signal.h>; only the numeric values are replaced.  */
+/**
+ * @file
+ * @brief textos override: Linux signal numbers.
+ *
+ * Match the textos kernel and its <bits/signal.h>.  The declarations are
+ * kept from newlib's <signal.h>; only the numeric values are replaced.
+ *
+ * @author deepseek-v4-flash
+ */
 
 #ifndef _SIGNAL_H_
 #define _SIGNAL_H_
