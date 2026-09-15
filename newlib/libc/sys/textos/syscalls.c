@@ -11,6 +11,7 @@
  * These are the non-reentrant (_-prefixed) primitives that newlib's
  * reentrant layer (libc/reent) and connectors (libc/syscalls) build on.
  *
+ * @author maouai233
  * @author deepseek-v4-flash
  */
 
@@ -86,45 +87,6 @@ __sysret(long ret)
   return ret;
 }
 
-/* textos' on-wire struct stat (from <bits/stat.h>) is not layout
-   compatible with newlib's struct stat, so stat/fstat marshal through a
-   private copy.  */
-struct _textos_stat
-{
-  long long dev;
-  long long ino;
-  unsigned int nlink;
-  unsigned int mode;
-  unsigned int uid;
-  unsigned int gid;
-  long long rdev;
-  long long size;
-  long long blksize;
-  long long blocks;
-  long long atime;
-  long long mtime;
-  long long ctime;
-};
-
-static void
-_textos_to_newlib_stat(const struct _textos_stat* ks, struct stat* st)
-{
-  memset(st, 0, sizeof(*st));
-  st->st_dev = ks->dev;
-  st->st_ino = ks->ino;
-  st->st_mode = ks->mode;
-  st->st_nlink = ks->nlink;
-  st->st_uid = ks->uid;
-  st->st_gid = ks->gid;
-  st->st_rdev = ks->rdev;
-  st->st_size = ks->size;
-  st->st_blksize = ks->blksize;
-  st->st_blocks = ks->blocks;
-  st->st_atim.tv_sec = ks->atime;
-  st->st_mtim.tv_sec = ks->mtime;
-  st->st_ctim.tv_sec = ks->ctime;
-}
-
 _READ_WRITE_RETURN_TYPE
 _read(int fd, void* buf, size_t cnt)
 {
@@ -165,25 +127,13 @@ _lseek(int fd, off_t pos, int whence)
 int
 _fstat(int fd, struct stat* st)
 {
-  struct _textos_stat ks;
-
-  long r = __sysret(__syscall2(SYS_fstat, fd, (long)&ks));
-  if (r != 0)
-    return r;
-  _textos_to_newlib_stat(&ks, st);
-  return 0;
+  return __sysret(__syscall2(SYS_fstat, fd, (long)st));
 }
 
 int
 _stat(const char* file, struct stat* st)
 {
-  struct _textos_stat ks;
-
-  long r = __sysret(__syscall2(SYS_stat, (long)file, (long)&ks));
-  if (r != 0)
-    return r;
-  _textos_to_newlib_stat(&ks, st);
-  return 0;
+  return __sysret(__syscall2(SYS_stat, (long)file, (long)st));
 }
 
 int
