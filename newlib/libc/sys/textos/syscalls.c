@@ -160,38 +160,6 @@ ioctl(int fd, int req, ...)
   return __sysret(__syscall3(SYS_ioctl, fd, req, (long)arg));
 }
 
-int
-tcgetattr(int fd, struct termios* tio)
-{
-  return __sysret(__syscall3(SYS_ioctl, fd, TCGETS, (long)tio));
-}
-
-int
-tcsetattr(int fd, int act, const struct termios* tio)
-{
-  if (act < TCSANOW || act > TCSAFLUSH) {
-    errno = EINVAL;
-    return -1;
-  }
-
-  return __sysret(__syscall3(SYS_ioctl, fd, TCSETS + act, (long)tio));
-}
-
-int
-tcsetpgrp(int fd, pid_t pgrp)
-{
-  return __sysret(__syscall3(SYS_ioctl, fd, TIOCSPGRP, (long)&pgrp));
-}
-
-pid_t
-tcgetpgrp(int fd)
-{
-  pid_t pgrp;
-  long r = __sysret(__syscall3(SYS_ioctl, fd, TIOCGPGRP, (long)&pgrp));
-
-  return r < 0 ? (pid_t)-1 : pgrp;
-}
-
 void*
 _sbrk(ptrdiff_t incr)
 {
