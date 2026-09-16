@@ -1,4 +1,4 @@
-libc_a_SOURCES += %D%/syscalls.c %D%/termios.c
+libc_a_SOURCES += %D%/syscalls.c %D%/termios.c %D%/dir.c
 
 toollib_DATA += %D%/crt1.o %D%/crti.o %D%/crtn.o
 %D%/crt1.o %D%/crti.o %D%/crtn.o: stmp-targ-include
