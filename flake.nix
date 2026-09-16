@@ -14,20 +14,15 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
 
-      textosToolchain = pkgs.runCommand "x86_64-unknown-textos-toolchain" { } ''
-        mkdir -p $out/bin
-        ln -s ${pkgs.gcc-unwrapped}/bin/gcc $out/bin/x86_64-unknown-textos-gcc
-        ln -s ${pkgs.gcc-unwrapped}/bin/gcc $out/bin/x86_64-unknown-textos-cc
-        ln -s ${pkgs.gcc-unwrapped}/bin/g++ $out/bin/x86_64-unknown-textos-g++
-        for t in ar as ld ranlib nm objcopy objdump strip readelf; do
-          ln -s ${pkgs.binutils-unwrapped}/bin/$t $out/bin/x86_64-unknown-textos-$t
-        done
-      '';
+      textosToolchain = pkgs.callPackage ./nix/toolchain.nix { };
+      gnuAutomake115 = pkgs.callPackage ./nix/automake115.nix { };
     in
     {
       packages.${system} = {
         default = textosToolchain;
-        x86_64-unknown-textos-toolchain = textosToolchain;
+        textos-toolchain = textosToolchain;
+        newlib-automake = gnuAutomake115;
+        newlib-autoconf = pkgs.autoconf269;
       };
 
       devShells.${system}.default = pkgs.mkShellNoCC {
@@ -41,7 +36,9 @@
           perl
           # for check-macros.py
           python3Packages.python
-          self.packages.${system}.x86_64-unknown-textos-toolchain
+          self.packages.${system}.textos-toolchain
+          self.packages.${system}.newlib-automake
+          self.packages.${system}.newlib-autoconf
         ];
       };
     };
