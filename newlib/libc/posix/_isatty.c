@@ -1,3 +1,5 @@
+#ifndef HAVE_ISATTY
+
 /* isatty.c */
 
 /* Dumb implementation so programs will at least run.  */
@@ -19,3 +21,5 @@ _isatty (int fd)
   errno = ENOTTY;
   return 0;
 }
+
+#endif /* !HAVE_ISATTY */
