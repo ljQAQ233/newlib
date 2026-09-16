@@ -18,122 +18,277 @@
 #include <_ansi.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <poll.h>
 #include <reent.h>
+#include <signal.h>
 #include <stdarg.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/signal.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
 #include <sys/time.h>
 #include <sys/times.h>
 #include <sys/types.h>
+#include <sys/uio.h>
+#include <sys/utsname.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <unistd.h>
 
-/* textos syscall numbers (Linux x86_64 compatible).  */
-#define SYS_read 0
-#define SYS_write 1
-#define SYS_open 2
-#define SYS_close 3
-#define SYS_stat 4
-#define SYS_fstat 5
-#define SYS_lseek 8
-#define SYS_brk 12
-#define SYS_ioctl 16
-#define SYS_getpid 39
-#define SYS_fork 57
-#define SYS_execve 59
-#define SYS_exit 60
-#define SYS_wait4 61
-#define SYS_kill 62
-#define SYS_fcntl 72
-#define SYS_rename 82
-#define SYS_unlink 87
-#define SYS_gettimeofday 96
-#define SYS_times 100
-#define SYS_time 201
+#define __syscall(num, a1, a2, a3, a4, a5, a6)                                 \
+  ({                                                                           \
+    register long __r0 __asm__("rax") = (long)(num);                           \
+    register long __r1 __asm__("rdi") = (long)(a1);                            \
+    register long __r2 __asm__("rsi") = (long)(a2);                            \
+    register long __r3 __asm__("rdx") = (long)(a3);                            \
+    register long __r4 __asm__("r10") = (long)(a4);                            \
+    register long __r5 __asm__("r8") = (long)(a5);                             \
+    register long __r6 __asm__("r9") = (long)(a6);                             \
+                                                                               \
+    __asm__ volatile(                                                          \
+      "syscall"                                                                \
+      : "+r"(__r0)                                                             \
+      : "r"(__r1), "r"(__r2), "r"(__r3), "r"(__r4), "r"(__r5), "r"(__r6)       \
+      : "memory", "rcx", "r11");                                               \
+    __r0;                                                                      \
+  })
 
-static inline long
-__syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)
-{
-  long ret;
-  register long r10 __asm__("r10") = a4;
-  register long r8 __asm__("r8") = a5;
-  register long r9 __asm__("r9") = a6;
-
-  __asm__ volatile(
-    "syscall"
-    : "=a"(ret)
-    : "a"(n), "D"(a1), "S"(a2), "d"(a3), "r"(r10), "r"(r8), "r"(r9)
-    : "rcx", "r11", "memory");
-  return ret;
-}
-
-#define __syscall0(n) __syscall6(n, 0, 0, 0, 0, 0, 0)
-#define __syscall1(n, a1) __syscall6(n, a1, 0, 0, 0, 0, 0)
-#define __syscall2(n, a1, a2) __syscall6(n, a1, a2, 0, 0, 0, 0)
-#define __syscall3(n, a1, a2, a3) __syscall6(n, a1, a2, a3, 0, 0, 0)
-#define __syscall4(n, a1, a2, a3, a4) __syscall6(n, a1, a2, a3, a4, 0, 0)
-
-/* Convert a raw syscall result into the C library convention: -1 with
-   errno set on error, the value itself on success.  */
+// According to the SysV ABI :
+// Returning from the syscall, register %rax contains the result of the
+// system-call. A value in the range between -4095 and -1 indicates an error, it
+// is -errno.
 static long
-__sysret(long ret)
+syscall_ret(long ret)
 {
-  if (ret < 0 && ret >= -4095) {
-    errno = (int)-ret;
+  if ((unsigned long)ret > -4096UL) {
+    errno = -ret;
     return -1;
   }
   return ret;
 }
 
+long
+syscall(long num, ...)
+{
+  va_list ap;
+  va_start(ap, num);
+  long a0 = num;
+  long a1 = va_arg(ap, long);
+  long a2 = va_arg(ap, long);
+  long a3 = va_arg(ap, long);
+  long a4 = va_arg(ap, long);
+  long a5 = va_arg(ap, long);
+  long a6 = va_arg(ap, long);
+  va_end(ap);
+
+  long r = __syscall(a0, a1, a2, a3, a4, a5, a6);
+  return syscall_ret(r);
+}
+
+pid_t
+_fork(void)
+{
+  return syscall(SYS_fork);
+}
+
+int
+_execve(const char* path, char* const argv[], char* const envp[])
+{
+  return syscall(SYS_execve, path, argv, envp);
+}
+
+__attribute__((noreturn)) void
+_exit(int stat)
+{
+  syscall(SYS_exit, stat);
+  __builtin_unreachable();
+}
+
+int
+pause(void)
+{
+  return syscall(SYS_pause);
+}
+
+int
+wait4(int pid, int* stat, int opt, void* rusage)
+{
+  return syscall(SYS_wait4, pid, stat, opt, rusage);
+}
+
+pid_t
+_wait(int* status)
+{
+  return wait4(-1, status, 0, NULL);
+}
+
+__attribute__((naked)) __attribute__((noreturn)) void
+__restorer()
+{
+  asm volatile("syscall\n" : : "a"(15) : "rcx", "r11", "memory");
+}
+
+void (*signal(int signum, void (*handler)(int)))(int)
+{
+  struct sigaction act = {
+        .sa_handler = handler,
+        .sa_flags = SA_RESTART,
+        .sa_mask = 0,
+    }, old;
+  if (sigaction(signum, &act, &old) < 0)
+    return SIG_ERR;
+  return old.sa_handler;
+}
+
+int
+sigaction(int signum, const struct sigaction* act, struct sigaction* oldact)
+{
+  if (act) {
+    struct sigaction __act = { .sa_handler = act->sa_handler,
+                               .sa_flags = act->sa_flags | SA_RESTORER,
+                               .sa_mask = act->sa_mask,
+                               .sa_restorer = __restorer };
+    return syscall(SYS_sigaction, signum, &__act, oldact);
+  }
+  return syscall(SYS_sigaction, signum, 0, oldact);
+}
+
+int
+sigprocmask(int how, const sigset_t* set, sigset_t* oset)
+{
+  return syscall(SYS_sigprocmask, how, set, oset);
+}
+
+int
+_kill(int pid, int sig)
+{
+  return syscall(SYS_kill, pid, sig);
+}
+
+int
+raise(int sig)
+{
+  return _kill(_getpid(), sig);
+}
+
+int
+uname(struct utsname* name)
+{
+  return syscall(SYS_uname, name);
+}
+
+int
+gethostname(char* name, size_t len)
+{
+  char b[1 << 9];
+  struct utsname* u = (struct utsname*)b;
+  if (uname(u) < 0)
+    return -1;
+
+  size_t nlen = strlen(u->nodename);
+  if (nlen + 1 > len) {
+    errno = ENAMETOOLONG;
+    return -1;
+  }
+  memcpy(name, u->nodename, nlen);
+  return 0;
+}
+
+int
+sethostname(const char* name, size_t len)
+{
+  return syscall(SYS_sethostname, name, len);
+}
+
+int
+_open(const char* path, int flgs, ...)
+{
+  int mode = 0;
+  if (flgs & O_CREAT) {
+    va_list ap;
+    va_start(ap, flgs);
+    mode = va_arg(ap, int);
+    va_end(ap);
+  }
+  return syscall(SYS_open, path, flgs, mode);
+}
+
+int
+_fcntl(int fd, int cmd, ...)
+{
+  va_list ap;
+  va_start(ap, cmd);
+  int arg = va_arg(ap, int);
+  va_end(ap);
+  return syscall(SYS_fcntl, fd, cmd, arg);
+}
+
 _READ_WRITE_RETURN_TYPE
 _read(int fd, void* buf, size_t cnt)
 {
-  return __sysret(__syscall3(SYS_read, fd, (long)buf, cnt));
+  return syscall(SYS_read, fd, buf, cnt);
+}
+
+ssize_t
+readv(int fd, const struct iovec* iov, int iovcnt)
+{
+  return syscall(SYS_readv, fd, iov, iovcnt);
 }
 
 _READ_WRITE_RETURN_TYPE
 _write(int fd, const void* buf, size_t cnt)
 {
-  return __sysret(__syscall3(SYS_write, fd, (long)buf, cnt));
+  return syscall(SYS_write, fd, buf, cnt);
+}
+
+ssize_t
+writev(int fd, const struct iovec* iov, int iovcnt)
+{
+  return syscall(SYS_writev, fd, iov, iovcnt);
+}
+
+off_t
+_lseek(int fd, off_t off, int whence)
+{
+  return syscall(SYS_lseek, fd, off, whence);
+}
+
+ssize_t
+__readdir(int fd, void* buf, size_t mx)
+{
+  return syscall(SYS_readdir, fd, buf, mx);
 }
 
 int
-_open(const char* name, int flags, ...)
+__seekdir(int fd, size_t* pos)
 {
-  int mode = 0;
-  va_list ap;
-
-  va_start(ap, flags);
-  mode = va_arg(ap, int);
-  va_end(ap);
-
-  return __sysret(__syscall3(SYS_open, (long)name, flags, mode));
+  return syscall(SYS_seekdir, fd, pos);
 }
 
 int
 _close(int fd)
 {
-  return __sysret(__syscall1(SYS_close, fd));
-}
-
-off_t
-_lseek(int fd, off_t pos, int whence)
-{
-  return __sysret(__syscall3(SYS_lseek, fd, pos, whence));
+  return syscall(SYS_close, fd);
 }
 
 int
-_fstat(int fd, struct stat* st)
+_stat(const char* path, struct stat* sb)
 {
-  return __sysret(__syscall2(SYS_fstat, fd, (long)st));
+  return syscall(SYS_stat, path, sb);
 }
 
 int
-_stat(const char* file, struct stat* st)
+lstat(const char* path, struct stat* sb)
 {
-  return __sysret(__syscall2(SYS_stat, (long)file, (long)st));
+  return -ENOSYS;
+}
+
+int
+_fstat(int fd, struct stat* sb)
+{
+  return syscall(SYS_fstat, sb);
 }
 
 int
@@ -144,63 +299,126 @@ _isatty(int fd)
     unsigned short ws_row, ws_col, ws_xpixel, ws_ypixel;
   } wsz;
 
-  return __sysret(__syscall3(SYS_ioctl, fd, TIOCGWINSZ, (long)&wsz)) == 0;
+  return syscall(SYS_ioctl, fd, TIOCGWINSZ, &wsz) == 0;
 }
 
 int
 ioctl(int fd, int req, ...)
 {
-  va_list ap;
-  void* arg;
+  va_list args;
+  va_start(args, req);
+  void* argp = va_arg(args, void*);
+  va_end(args);
 
-  va_start(ap, req);
-  arg = va_arg(ap, void*);
-  va_end(ap);
-
-  return __sysret(__syscall3(SYS_ioctl, fd, req, (long)arg));
-}
-
-void*
-_sbrk(ptrdiff_t incr)
-{
-  char* cur = (char*)__syscall1(SYS_brk, 0);
-  char* new = (char*)__syscall1(SYS_brk, (long)(cur + incr));
-
-  if (new < cur + incr) {
-    errno = ENOMEM;
-    return (void*)-1;
-  }
-  return cur;
+  return syscall(SYS_ioctl, fd, req, argp);
 }
 
 int
-_kill(int pid, int sig)
+access(const char* path, int amode)
 {
-  return __sysret(__syscall2(SYS_kill, pid, sig));
-}
-
-pid_t
-_getpid(void)
-{
-  return __sysret(__syscall0(SYS_getpid));
-}
-
-clock_t
-_times(struct tms* buf)
-{
-  return __sysret(__syscall1(SYS_times, (long)buf));
+  return syscall(SYS_access, path, amode);
 }
 
 int
-_gettimeofday(struct timeval* tp, void* tzp)
+chown(const char* path, uid_t owner, gid_t group)
 {
-  return __sysret(__syscall2(SYS_gettimeofday, (long)tp, (long)tzp));
+  return syscall(SYS_chown, path, owner, group);
 }
 
 int
-_unlink(const char* name)
+fchown(int fd, uid_t owner, gid_t group)
 {
-  return __sysret(__syscall1(SYS_unlink, (long)name));
+  return syscall(SYS_fchown, fd, owner, group);
+}
+
+int
+chmod(const char* path, mode_t mode)
+{
+  return syscall(SYS_chmod, path, mode);
+}
+
+int
+fchmod(int fd, mode_t mode)
+{
+  return syscall(SYS_fchmod, fd, mode);
+}
+
+int
+dup(int fd)
+{
+  return syscall(SYS_dup, fd);
+}
+
+int
+dup2(int oldfd, int newfd)
+{
+  return syscall(SYS_dup2, oldfd, newfd);
+}
+
+int
+pipe(int fds[2])
+{
+  return syscall(SYS_pipe, fds);
+}
+
+int
+_rename(const char* oldpath, const char* newpath)
+{
+  return syscall(SYS_rename, oldpath, newpath);
+}
+
+int
+mknod(const char* path, mode_t mode, dev_t dev)
+{
+  return syscall(SYS_mknod, path, mode, dev);
+}
+
+int
+mount(const char* src, const char* dst)
+{
+  return syscall(SYS_mount, src, dst);
+}
+
+int
+umount2(const char* target, int flags)
+{
+  return syscall(SYS_umount2, target, flags);
+}
+
+int
+umount(const char* target)
+{
+  return umount2(target, 0);
+}
+
+int
+chdir(const char* path)
+{
+  return syscall(SYS_chdir, path);
+}
+
+int
+_mkdir(const char* path, mode_t mode)
+{
+  return syscall(SYS_mkdir, path, mode);
+}
+
+int
+mkdir(const char* path, mode_t mode)
+{
+  return _mkdir(path, mode);
+}
+
+int
+rmdir(const char* path)
+{
+  return syscall(SYS_rmdir, path);
+}
+
+int
+_unlink(const char* path)
+{
+  return syscall(SYS_unlink, path);
 }
 
 int
@@ -213,40 +431,337 @@ _link(const char* oldpath, const char* newpath)
 }
 
 int
-_rename(const char* oldpath, const char* newpath)
+symlink(const char* linkto, const char* path)
 {
-  return __sysret(__syscall2(SYS_rename, (long)oldpath, (long)newpath));
+  return syscall(SYS_symlink, linkto, path);
 }
 
-pid_t
-_fork(void)
+ssize_t
+readlink(const char* path, char* buf, size_t bufsize)
 {
-  return __sysret(__syscall0(SYS_fork));
+  return syscall(SYS_readlink, path, buf, bufsize);
 }
 
-pid_t
-_wait(int* status)
+char*
+getcwd(char* buf, size_t size)
 {
-  return __sysret(__syscall4(SYS_wait4, -1, (long)status, 0, 0));
-}
-
-int
-_execve(const char* name, char* const argv[], char* const envp[])
-{
-  return __sysret(__syscall3(SYS_execve, (long)name, (long)argv, (long)envp));
+  // syscall_ret will handle errno
+  return (char*)syscall(SYS_getcwd, buf, size);
 }
 
 int
-_fcntl(int fd, int cmd, ...)
+socket(int domain, int type, int proto)
 {
-  int arg;
-  va_list ap;
+  return syscall(SYS_socket, domain, type, proto);
+}
 
-  va_start(ap, cmd);
-  arg = va_arg(ap, int);
-  va_end(ap);
+int
+bind(int fd, struct sockaddr* addr, socklen_t len)
+{
+  return syscall(SYS_bind, fd, addr, len);
+}
 
-  return __sysret(__syscall3(SYS_fcntl, fd, cmd, arg));
+int
+listen(int fd, int backlog)
+{
+  return syscall(SYS_listen, fd, backlog);
+}
+
+int
+accept(int fd, struct sockaddr* addr, socklen_t* len)
+{
+  return syscall(SYS_accept, fd, addr, len);
+}
+
+int
+connect(int fd, struct sockaddr* addr, socklen_t len)
+{
+  return syscall(SYS_connect, fd, addr, len);
+}
+
+int
+shutdown(int fd, int how)
+{
+  return syscall(SYS_shutdown, fd, how);
+}
+
+int
+getsockname(int fd, struct sockaddr* addr, socklen_t* len)
+{
+  return syscall(SYS_getsockname, fd, addr, len);
+}
+
+int
+getpeername(int fd, struct sockaddr* addr, socklen_t* len)
+{
+  return syscall(SYS_getpeername, fd, addr, len);
+}
+
+ssize_t
+sendmsg(int fd, struct msghdr* msg, int flags)
+{
+  return syscall(SYS_sendmsg, fd, msg, flags);
+}
+
+ssize_t
+recvmsg(int fd, struct msghdr* msg, int flags)
+{
+  return syscall(SYS_recvmsg, fd, msg, flags);
+}
+
+ssize_t
+sendto(int fd,
+       void* buf,
+       size_t len,
+       int flags,
+       struct sockaddr* dst,
+       socklen_t dlen)
+{
+  return syscall(SYS_sendto, fd, buf, len, flags, dst, dlen);
+}
+
+ssize_t
+recvfrom(int fd,
+         void* buf,
+         size_t len,
+         int flags,
+         struct sockaddr* src,
+         socklen_t* slen)
+{
+  return syscall(SYS_recvfrom, fd, buf, len, flags, src, slen);
+}
+
+ssize_t
+send(int fd, void* buf, size_t len, int flags)
+{
+  return sendto(fd, buf, len, flags, NULL, 0);
+}
+
+ssize_t
+recv(int fd, void* buf, size_t len, int flags)
+{
+  return recvfrom(fd, buf, len, flags, NULL, 0);
+}
+
+void*
+mmap(void* addr, size_t len, int prot, int flgs, int fd, off_t off)
+{
+  return (void*)syscall(SYS_mmap, addr, len, prot, flgs, fd, off);
+}
+
+int
+mprotect(void* addr, size_t len, int prot)
+{
+  return syscall(SYS_mprotect, addr, len, prot);
+}
+
+int
+munmap(void* addr, size_t len)
+{
+  return syscall(SYS_munmap, addr, len);
+}
+
+int
+brk(void* ptr)
+{
+  void* ret = (void*)syscall(SYS_brk, ptr);
+  if (ret < ptr) {
+    errno = ENOMEM;
+    return -1;
+  }
+  return 0;
+}
+
+void*
+_sbrk(ptrdiff_t inc)
+{
+  void* curr = (void*)syscall(SYS_brk, 0);
+  if (inc && brk(curr + inc) < 0) {
+    return (void*)-1;
+  }
+  return curr;
+}
+
+uid_t
+getuid(void)
+{
+  return syscall(SYS_getuid);
+}
+
+gid_t
+getgid(void)
+{
+  return syscall(SYS_getgid);
+}
+
+uid_t
+geteuid(void)
+{
+  return syscall(SYS_geteuid);
+}
+
+gid_t
+getegid()
+{
+  return syscall(SYS_getegid);
+}
+
+int
+setuid(uid_t uid)
+{
+  return syscall(SYS_setuid, uid);
+}
+
+int
+setgid(gid_t gid)
+{
+  return syscall(SYS_setgid, gid);
+}
+
+int
+setreuid(uid_t ruid, uid_t euid)
+{
+  return syscall(SYS_setreuid, ruid, euid);
+}
+
+int
+setregid(gid_t rgid, gid_t egid)
+{
+  return syscall(SYS_setregid, rgid, egid);
+}
+
+int
+getgroups(int size, gid_t* list)
+{
+  return syscall(SYS_getgroups, size, list);
+}
+
+int
+setgroups(int size, const gid_t* list)
+{
+  return syscall(SYS_setgroups, size, list);
+}
+
+pid_t
+getsid(pid_t pid)
+{
+  return syscall(SYS_getsid, pid);
+}
+
+pid_t
+setsid()
+{
+  return syscall(SYS_setsid);
+}
+
+pid_t
+getpgid(pid_t pid)
+{
+  return syscall(SYS_getpgid, pid);
+}
+
+pid_t
+getpgrp()
+{
+  return getpgid(0);
+}
+
+int
+setpgid(pid_t pid, pid_t pgid)
+{
+  return syscall(SYS_setpgid, pid, pgid);
+}
+
+pid_t
+_getpid(void)
+{
+  return syscall(SYS_getpid);
+}
+
+pid_t
+getppid()
+{
+  return syscall(SYS_getppid);
+}
+
+mode_t
+umask(mode_t mask)
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+/* sys/time.h */
+int
+_gettimeofday(struct timeval* tp, void* restrict tzp)
+{
+  return syscall(SYS_gettimeofday, tp, tzp);
+}
+
+#include <time.h>
+
+/* time.h */
+time_t
+_time(time_t* tp)
+{
+  return syscall(SYS_time, tp);
+}
+
+int
+nanosleep(const struct timespec* rqtp, struct timespec* rmtp)
+{
+  return syscall(SYS_nanosleep, rqtp, rmtp);
+}
+
+#include <sys/times.h>
+
+/* sys/times.h */
+clock_t
+_times(struct tms* buf)
+{
+  return syscall(SYS_times, buf);
+}
+
+#include <poll.h>
+
+int
+poll(struct pollfd fds[], nfds_t nfds, int timeout /* ms */)
+{
+  return syscall(SYS_poll, fds, nfds, timeout);
+}
+
+#include <sys/select.h>
+
+int
+select(int nfds,
+       fd_set* readfds,
+       fd_set* writefds,
+       fd_set* errorfds,
+       struct timeval* timeout)
+{
+  return syscall(SYS_select, nfds, readfds, writefds, errorfds, timeout);
+}
+
+/* picked from musl */
+/* sys/ptrace.h */
+long
+ptrace(int req, ...)
+{
+  va_list args;
+  pid_t pid;
+  void *addr, *data;
+  long ret, result;
+  va_start(args, req);
+  va_end(args);
+  pid = va_arg(args, pid_t);
+  addr = va_arg(args, void*);
+  data = va_arg(args, void*);
+  if (req - 1U < 3)
+    data = &result;
+  ret = syscall(SYS_ptrace, req, pid, addr, data);
+  if (ret < 0 || req - 1U >= 3)
+    return ret;
+  return result;
 }
 
 int
@@ -258,11 +773,4 @@ _getentropy(void* buf, size_t buflen)
   (void)buflen;
   errno = ENOSYS;
   return -1;
-}
-
-void
-_exit(int status)
-{
-  __syscall1(SYS_exit, status);
-  __builtin_unreachable();
 }
