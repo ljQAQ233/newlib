@@ -1,6 +1,28 @@
+#define _GNU_SOURCE
 #include <errno.h>
+#include <limits.h>
 #include <sys/ioctl.h>
+#include <sys/syscall.h>
 #include <termios.h>
+
+int
+ttyname_r(int fd, char* buf, size_t size)
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+char*
+ttyname(int fd)
+{
+  static char buf[TTY_NAME_MAX];
+  int result;
+  if ((result = ttyname_r(fd, buf, sizeof buf))) {
+    errno = result;
+    return NULL;
+  }
+  return buf;
+}
 
 int
 tcgetattr(int fd, struct termios* tio)

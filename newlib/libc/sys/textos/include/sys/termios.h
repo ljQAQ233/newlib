@@ -35,6 +35,11 @@ struct termios
     speed_t __c_ospeed;
 };
 
+struct winsize
+{
+    unsigned short ws_row, ws_col, ws_xpixel, ws_ypixel;
+};
+
 /* input flags */
 #define IGNBRK  0000001
 #define BRKINT  0000002
@@ -63,7 +68,11 @@ struct termios
 #define CS6    0000020
 #define CS7    0000040
 #define CS8    0000060
+#define CSTOPB 0000100
 #define CREAD  0000200
+#define PARENB 0000400
+#define PARODD 0001000
+#define HUPCL  0002000
 #define CLOCAL 0004000
 
 /* local flags */
