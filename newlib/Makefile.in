@@ -624,7 +624,7 @@ check_PROGRAMS =
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/ioctl.S libc/sys/sysvnecv70/isatty.S libc/sys/sysvnecv70/read.S libc/sys/sysvnecv70/lseek.S libc/sys/sysvnecv70/close.S libc/sys/sysvnecv70/sbrk.S libc/sys/sysvnecv70/fstat.S \
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/cerror.S libc/sys/sysvnecv70/exit.S libc/sys/sysvnecv70/write.S libc/sys/sysvnecv70/sysv60.S libc/sys/sysvnecv70/fpx.c libc/sys/sysvnecv70/fps.S libc/sys/sysvnecv70/open.S
 
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_62 = libc/sys/textos/syscalls.c
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_62 = libc/sys/textos/syscalls.c libc/sys/textos/termios.c libc/sys/textos/dir.c libc/sys/textos/signal.c
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_63 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_64 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__append_65 = libc/sys/tirtos/lock.c
@@ -1905,7 +1905,10 @@ am__objects_51 = libc/ssp/libc_a-chk_fail.$(OBJEXT) \
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/libc_a-fpx.$(OBJEXT) \
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/libc_a-fps.$(OBJEXT) \
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/libc_a-open.$(OBJEXT)
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__objects_73 = libc/sys/textos/libc_a-syscalls.$(OBJEXT)
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__objects_73 = libc/sys/textos/libc_a-syscalls.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-termios.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-dir.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-signal.$(OBJEXT)
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__objects_74 = libc/sys/tirtos/libc_a-lock.$(OBJEXT)
 @HAVE_LIBC_SYS_W65_DIR_TRUE@am__objects_75 = libc/sys/w65/libc_a-syscalls.$(OBJEXT) \
 @HAVE_LIBC_SYS_W65_DIR_TRUE@	libc/sys/w65/libc_a-trap.$(OBJEXT)
@@ -8078,6 +8081,14 @@ libc/sys/textos/$(DEPDIR)/$(am__dirstamp):
 libc/sys/textos/libc_a-syscalls.$(OBJEXT):  \
 	libc/sys/textos/$(am__dirstamp) \
 	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/libc_a-termios.$(OBJEXT):  \
+	libc/sys/textos/$(am__dirstamp) \
+	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/libc_a-dir.$(OBJEXT): libc/sys/textos/$(am__dirstamp) \
+	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/libc_a-signal.$(OBJEXT):  \
+	libc/sys/textos/$(am__dirstamp) \
+	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
 libc/sys/tirtos/$(am__dirstamp):
 	@$(MKDIR_P) libc/sys/tirtos
 	@: > libc/sys/tirtos/$(am__dirstamp)
@@ -14195,7 +14206,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/sysvnecv70/$(DEPDIR)/libc_a-sbrk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/sysvnecv70/$(DEPDIR)/libc_a-sysv60.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/sysvnecv70/$(DEPDIR)/libc_a-write.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-dir.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-signal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-syscalls.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-termios.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/tirtos/$(DEPDIR)/libc_a-lock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/w65/$(DEPDIR)/libc_a-syscalls.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/w65/$(DEPDIR)/libc_a-trap.Po@am__quote@
@@ -33319,6 +33333,48 @@ libc/sys/textos/libc_a-syscalls.obj: libc/sys/textos/syscalls.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/syscalls.c' object='libc/sys/textos/libc_a-syscalls.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-syscalls.obj `if test -f 'libc/sys/textos/syscalls.c'; then $(CYGPATH_W) 'libc/sys/textos/syscalls.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/syscalls.c'; fi`
+
+libc/sys/textos/libc_a-termios.o: libc/sys/textos/termios.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-termios.o -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-termios.Tpo -c -o libc/sys/textos/libc_a-termios.o `test -f 'libc/sys/textos/termios.c' || echo '$(srcdir)/'`libc/sys/textos/termios.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-termios.Tpo libc/sys/textos/$(DEPDIR)/libc_a-termios.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/termios.c' object='libc/sys/textos/libc_a-termios.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-termios.o `test -f 'libc/sys/textos/termios.c' || echo '$(srcdir)/'`libc/sys/textos/termios.c
+
+libc/sys/textos/libc_a-termios.obj: libc/sys/textos/termios.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-termios.obj -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-termios.Tpo -c -o libc/sys/textos/libc_a-termios.obj `if test -f 'libc/sys/textos/termios.c'; then $(CYGPATH_W) 'libc/sys/textos/termios.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/termios.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-termios.Tpo libc/sys/textos/$(DEPDIR)/libc_a-termios.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/termios.c' object='libc/sys/textos/libc_a-termios.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-termios.obj `if test -f 'libc/sys/textos/termios.c'; then $(CYGPATH_W) 'libc/sys/textos/termios.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/termios.c'; fi`
+
+libc/sys/textos/libc_a-dir.o: libc/sys/textos/dir.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-dir.o -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-dir.Tpo -c -o libc/sys/textos/libc_a-dir.o `test -f 'libc/sys/textos/dir.c' || echo '$(srcdir)/'`libc/sys/textos/dir.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-dir.Tpo libc/sys/textos/$(DEPDIR)/libc_a-dir.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/dir.c' object='libc/sys/textos/libc_a-dir.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-dir.o `test -f 'libc/sys/textos/dir.c' || echo '$(srcdir)/'`libc/sys/textos/dir.c
+
+libc/sys/textos/libc_a-dir.obj: libc/sys/textos/dir.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-dir.obj -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-dir.Tpo -c -o libc/sys/textos/libc_a-dir.obj `if test -f 'libc/sys/textos/dir.c'; then $(CYGPATH_W) 'libc/sys/textos/dir.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/dir.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-dir.Tpo libc/sys/textos/$(DEPDIR)/libc_a-dir.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/dir.c' object='libc/sys/textos/libc_a-dir.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-dir.obj `if test -f 'libc/sys/textos/dir.c'; then $(CYGPATH_W) 'libc/sys/textos/dir.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/dir.c'; fi`
+
+libc/sys/textos/libc_a-signal.o: libc/sys/textos/signal.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-signal.o -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-signal.Tpo -c -o libc/sys/textos/libc_a-signal.o `test -f 'libc/sys/textos/signal.c' || echo '$(srcdir)/'`libc/sys/textos/signal.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-signal.Tpo libc/sys/textos/$(DEPDIR)/libc_a-signal.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/signal.c' object='libc/sys/textos/libc_a-signal.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-signal.o `test -f 'libc/sys/textos/signal.c' || echo '$(srcdir)/'`libc/sys/textos/signal.c
+
+libc/sys/textos/libc_a-signal.obj: libc/sys/textos/signal.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-signal.obj -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-signal.Tpo -c -o libc/sys/textos/libc_a-signal.obj `if test -f 'libc/sys/textos/signal.c'; then $(CYGPATH_W) 'libc/sys/textos/signal.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/signal.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-signal.Tpo libc/sys/textos/$(DEPDIR)/libc_a-signal.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/signal.c' object='libc/sys/textos/libc_a-signal.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-signal.obj `if test -f 'libc/sys/textos/signal.c'; then $(CYGPATH_W) 'libc/sys/textos/signal.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/signal.c'; fi`
 
 libc/sys/tirtos/libc_a-lock.o: libc/sys/tirtos/lock.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/tirtos/libc_a-lock.o -MD -MP -MF libc/sys/tirtos/$(DEPDIR)/libc_a-lock.Tpo -c -o libc/sys/tirtos/libc_a-lock.o `test -f 'libc/sys/tirtos/lock.c' || echo '$(srcdir)/'`libc/sys/tirtos/lock.c
