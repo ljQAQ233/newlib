@@ -1,6 +1,6 @@
 incdir=$1
 libdir=$3
-ldso=$4
+ldso=$3
 
 cat <<EOF
 *cc1:
@@ -20,6 +20,7 @@ libgcc.a%s
 
 *endfile:
 %{!shared:$libdir/crtn.o}
+
 *link:
 -dynamic-linker $ldso -nostdlib %{shared:-shared} %{static:-static} %{rdynamic:-export-dynamic}
 
