@@ -1,5 +1,5 @@
 incdir=$1
-libdir=$3
+libdir=$2
 ldso=$3
 
 cat <<EOF
@@ -7,7 +7,7 @@ cat <<EOF
 %(cc1_cpu) -nostdinc $(for d in $incdir; do printf -- "-isystem %s " "$d"; done)
 
 *lib:
-$(for d in $libdir; do printf -- "-L %s " "$d"; done)
+%{!nostdlib:-lc} $(for d in $libdir; do printf -- "-L %s " "$d"; done)
 
 *link_libgcc:
 %{!nostdlib:-lc} -L .%s
