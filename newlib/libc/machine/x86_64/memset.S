@@ -86,3 +86,5 @@ quadword_set:
   movq    r9, rax
   ret
 
+  .section .note.GNU-stack,"",@progbits
+

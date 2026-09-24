@@ -111,3 +111,5 @@ quadword_copy:
   andq    $7, rcx
   rep     movsb                   /* Copy the remaining bytes */
   ret
+
+  .section .note.GNU-stack,"",@progbits

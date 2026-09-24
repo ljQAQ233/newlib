@@ -51,3 +51,5 @@ SYM (longjmp):
   __STI
 
   ret
+
+  .section .note.GNU-stack,"",@progbits
