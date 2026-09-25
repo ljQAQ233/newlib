@@ -629,6 +629,7 @@ check_PROGRAMS =
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/termios.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/dir.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/signal.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/sysconf.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/winit.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/wutil.c
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_63 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
@@ -1915,6 +1916,7 @@ am__objects_51 = libc/ssp/libc_a-chk_fail.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-termios.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-dir.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-signal.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-sysconf.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-winit.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-wutil.$(OBJEXT)
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__objects_74 = libc/sys/tirtos/libc_a-lock.$(OBJEXT)
@@ -8097,6 +8099,9 @@ libc/sys/textos/libc_a-dir.$(OBJEXT): libc/sys/textos/$(am__dirstamp) \
 libc/sys/textos/libc_a-signal.$(OBJEXT):  \
 	libc/sys/textos/$(am__dirstamp) \
 	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/libc_a-sysconf.$(OBJEXT):  \
+	libc/sys/textos/$(am__dirstamp) \
+	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
 libc/sys/textos/wrapper/$(am__dirstamp):
 	@$(MKDIR_P) libc/sys/textos/wrapper
 	@: > libc/sys/textos/wrapper/$(am__dirstamp)
@@ -14230,6 +14235,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-dir.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-signal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-syscalls.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-termios.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Po@am__quote@
@@ -33398,6 +33404,20 @@ libc/sys/textos/libc_a-signal.obj: libc/sys/textos/signal.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/signal.c' object='libc/sys/textos/libc_a-signal.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-signal.obj `if test -f 'libc/sys/textos/signal.c'; then $(CYGPATH_W) 'libc/sys/textos/signal.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/signal.c'; fi`
+
+libc/sys/textos/libc_a-sysconf.o: libc/sys/textos/sysconf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-sysconf.o -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Tpo -c -o libc/sys/textos/libc_a-sysconf.o `test -f 'libc/sys/textos/sysconf.c' || echo '$(srcdir)/'`libc/sys/textos/sysconf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Tpo libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/sysconf.c' object='libc/sys/textos/libc_a-sysconf.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-sysconf.o `test -f 'libc/sys/textos/sysconf.c' || echo '$(srcdir)/'`libc/sys/textos/sysconf.c
+
+libc/sys/textos/libc_a-sysconf.obj: libc/sys/textos/sysconf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/libc_a-sysconf.obj -MD -MP -MF libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Tpo -c -o libc/sys/textos/libc_a-sysconf.obj `if test -f 'libc/sys/textos/sysconf.c'; then $(CYGPATH_W) 'libc/sys/textos/sysconf.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/sysconf.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Tpo libc/sys/textos/$(DEPDIR)/libc_a-sysconf.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/sysconf.c' object='libc/sys/textos/libc_a-sysconf.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-sysconf.obj `if test -f 'libc/sys/textos/sysconf.c'; then $(CYGPATH_W) 'libc/sys/textos/sysconf.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/sysconf.c'; fi`
 
 libc/sys/textos/wrapper/libc_a-winit.o: libc/sys/textos/wrapper/winit.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/wrapper/libc_a-winit.o -MD -MP -MF libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Tpo -c -o libc/sys/textos/wrapper/libc_a-winit.o `test -f 'libc/sys/textos/wrapper/winit.c' || echo '$(srcdir)/'`libc/sys/textos/wrapper/winit.c
