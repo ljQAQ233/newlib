@@ -2,6 +2,7 @@
 #include <sys/unistd.h>
 
 extern char **environ;
+extern void __init_wrapper();
 extern int main(int, char **, char **);
 extern void __libc_init_array(void);
 extern void __libc_fini_array(void);
@@ -14,6 +15,8 @@ void __textos_crt1(long *sp) {
   char **envp = (char **)&sp[1 + argc + 1];
 
   environ = envp;
+
+  __init_wrapper();
 
   /* _WANT_REGISTER_FINI is not enabled for textos, so register the
      finalization routine ourselves.  It runs after any atexit handler

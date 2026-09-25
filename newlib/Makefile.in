@@ -624,7 +624,13 @@ check_PROGRAMS =
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/ioctl.S libc/sys/sysvnecv70/isatty.S libc/sys/sysvnecv70/read.S libc/sys/sysvnecv70/lseek.S libc/sys/sysvnecv70/close.S libc/sys/sysvnecv70/sbrk.S libc/sys/sysvnecv70/fstat.S \
 @HAVE_LIBC_SYS_SYSVNECV70_DIR_TRUE@	libc/sys/sysvnecv70/cerror.S libc/sys/sysvnecv70/exit.S libc/sys/sysvnecv70/write.S libc/sys/sysvnecv70/sysv60.S libc/sys/sysvnecv70/fpx.c libc/sys/sysvnecv70/fps.S libc/sys/sysvnecv70/open.S
 
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_62 = libc/sys/textos/syscalls.c libc/sys/textos/termios.c libc/sys/textos/dir.c libc/sys/textos/signal.c
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_62 =  \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/syscalls.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/termios.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/dir.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/signal.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/winit.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/wutil.c
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_63 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_64 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__append_65 = libc/sys/tirtos/lock.c
@@ -1908,7 +1914,9 @@ am__objects_51 = libc/ssp/libc_a-chk_fail.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__objects_73 = libc/sys/textos/libc_a-syscalls.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-termios.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-dir.$(OBJEXT) \
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-signal.$(OBJEXT)
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-signal.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-winit.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-wutil.$(OBJEXT)
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__objects_74 = libc/sys/tirtos/libc_a-lock.$(OBJEXT)
 @HAVE_LIBC_SYS_W65_DIR_TRUE@am__objects_75 = libc/sys/w65/libc_a-syscalls.$(OBJEXT) \
 @HAVE_LIBC_SYS_W65_DIR_TRUE@	libc/sys/w65/libc_a-trap.$(OBJEXT)
@@ -8089,6 +8097,18 @@ libc/sys/textos/libc_a-dir.$(OBJEXT): libc/sys/textos/$(am__dirstamp) \
 libc/sys/textos/libc_a-signal.$(OBJEXT):  \
 	libc/sys/textos/$(am__dirstamp) \
 	libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/wrapper/$(am__dirstamp):
+	@$(MKDIR_P) libc/sys/textos/wrapper
+	@: > libc/sys/textos/wrapper/$(am__dirstamp)
+libc/sys/textos/wrapper/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) libc/sys/textos/wrapper/$(DEPDIR)
+	@: > libc/sys/textos/wrapper/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/wrapper/libc_a-winit.$(OBJEXT):  \
+	libc/sys/textos/wrapper/$(am__dirstamp) \
+	libc/sys/textos/wrapper/$(DEPDIR)/$(am__dirstamp)
+libc/sys/textos/wrapper/libc_a-wutil.$(OBJEXT):  \
+	libc/sys/textos/wrapper/$(am__dirstamp) \
+	libc/sys/textos/wrapper/$(DEPDIR)/$(am__dirstamp)
 libc/sys/tirtos/$(am__dirstamp):
 	@$(MKDIR_P) libc/sys/tirtos
 	@: > libc/sys/tirtos/$(am__dirstamp)
@@ -12721,6 +12741,7 @@ mostlyclean-compile:
 	-rm -f libc/sys/sysvi386/*.$(OBJEXT)
 	-rm -f libc/sys/sysvnecv70/*.$(OBJEXT)
 	-rm -f libc/sys/textos/*.$(OBJEXT)
+	-rm -f libc/sys/textos/wrapper/*.$(OBJEXT)
 	-rm -f libc/sys/tirtos/*.$(OBJEXT)
 	-rm -f libc/sys/w65/*.$(OBJEXT)
 	-rm -f libc/sys/z8ksim/*.$(OBJEXT)
@@ -14210,6 +14231,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-signal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-syscalls.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/$(DEPDIR)/libc_a-termios.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/tirtos/$(DEPDIR)/libc_a-lock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/w65/$(DEPDIR)/libc_a-syscalls.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@libc/sys/w65/$(DEPDIR)/libc_a-trap.Po@am__quote@
@@ -33376,6 +33399,34 @@ libc/sys/textos/libc_a-signal.obj: libc/sys/textos/signal.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/libc_a-signal.obj `if test -f 'libc/sys/textos/signal.c'; then $(CYGPATH_W) 'libc/sys/textos/signal.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/signal.c'; fi`
 
+libc/sys/textos/wrapper/libc_a-winit.o: libc/sys/textos/wrapper/winit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/wrapper/libc_a-winit.o -MD -MP -MF libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Tpo -c -o libc/sys/textos/wrapper/libc_a-winit.o `test -f 'libc/sys/textos/wrapper/winit.c' || echo '$(srcdir)/'`libc/sys/textos/wrapper/winit.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Tpo libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/wrapper/winit.c' object='libc/sys/textos/wrapper/libc_a-winit.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/wrapper/libc_a-winit.o `test -f 'libc/sys/textos/wrapper/winit.c' || echo '$(srcdir)/'`libc/sys/textos/wrapper/winit.c
+
+libc/sys/textos/wrapper/libc_a-winit.obj: libc/sys/textos/wrapper/winit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/wrapper/libc_a-winit.obj -MD -MP -MF libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Tpo -c -o libc/sys/textos/wrapper/libc_a-winit.obj `if test -f 'libc/sys/textos/wrapper/winit.c'; then $(CYGPATH_W) 'libc/sys/textos/wrapper/winit.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/wrapper/winit.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Tpo libc/sys/textos/wrapper/$(DEPDIR)/libc_a-winit.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/wrapper/winit.c' object='libc/sys/textos/wrapper/libc_a-winit.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/wrapper/libc_a-winit.obj `if test -f 'libc/sys/textos/wrapper/winit.c'; then $(CYGPATH_W) 'libc/sys/textos/wrapper/winit.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/wrapper/winit.c'; fi`
+
+libc/sys/textos/wrapper/libc_a-wutil.o: libc/sys/textos/wrapper/wutil.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/wrapper/libc_a-wutil.o -MD -MP -MF libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Tpo -c -o libc/sys/textos/wrapper/libc_a-wutil.o `test -f 'libc/sys/textos/wrapper/wutil.c' || echo '$(srcdir)/'`libc/sys/textos/wrapper/wutil.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Tpo libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/wrapper/wutil.c' object='libc/sys/textos/wrapper/libc_a-wutil.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/wrapper/libc_a-wutil.o `test -f 'libc/sys/textos/wrapper/wutil.c' || echo '$(srcdir)/'`libc/sys/textos/wrapper/wutil.c
+
+libc/sys/textos/wrapper/libc_a-wutil.obj: libc/sys/textos/wrapper/wutil.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/textos/wrapper/libc_a-wutil.obj -MD -MP -MF libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Tpo -c -o libc/sys/textos/wrapper/libc_a-wutil.obj `if test -f 'libc/sys/textos/wrapper/wutil.c'; then $(CYGPATH_W) 'libc/sys/textos/wrapper/wutil.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/wrapper/wutil.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Tpo libc/sys/textos/wrapper/$(DEPDIR)/libc_a-wutil.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='libc/sys/textos/wrapper/wutil.c' object='libc/sys/textos/wrapper/libc_a-wutil.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -c -o libc/sys/textos/wrapper/libc_a-wutil.obj `if test -f 'libc/sys/textos/wrapper/wutil.c'; then $(CYGPATH_W) 'libc/sys/textos/wrapper/wutil.c'; else $(CYGPATH_W) '$(srcdir)/libc/sys/textos/wrapper/wutil.c'; fi`
+
 libc/sys/tirtos/libc_a-lock.o: libc/sys/tirtos/lock.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libc_a_CPPFLAGS) $(CPPFLAGS) $(libc_a_CFLAGS) $(CFLAGS) -MT libc/sys/tirtos/libc_a-lock.o -MD -MP -MF libc/sys/tirtos/$(DEPDIR)/libc_a-lock.Tpo -c -o libc/sys/tirtos/libc_a-lock.o `test -f 'libc/sys/tirtos/lock.c' || echo '$(srcdir)/'`libc/sys/tirtos/lock.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) libc/sys/tirtos/$(DEPDIR)/libc_a-lock.Tpo libc/sys/tirtos/$(DEPDIR)/libc_a-lock.Po
@@ -50793,6 +50844,8 @@ distclean-generic:
 	-rm -f libc/sys/sysvnecv70/$(am__dirstamp)
 	-rm -f libc/sys/textos/$(DEPDIR)/$(am__dirstamp)
 	-rm -f libc/sys/textos/$(am__dirstamp)
+	-rm -f libc/sys/textos/wrapper/$(DEPDIR)/$(am__dirstamp)
+	-rm -f libc/sys/textos/wrapper/$(am__dirstamp)
 	-rm -f libc/sys/tirtos/$(DEPDIR)/$(am__dirstamp)
 	-rm -f libc/sys/tirtos/$(am__dirstamp)
 	-rm -f libc/sys/w65/$(DEPDIR)/$(am__dirstamp)
@@ -50863,7 +50916,7 @@ clean-am: clean-aminfo clean-checkPROGRAMS clean-generic clean-local \
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-	-rm -rf libc/argz/$(DEPDIR) libc/ctype/$(DEPDIR) libc/errno/$(DEPDIR) libc/iconv/ccs/$(DEPDIR) libc/iconv/ces/$(DEPDIR) libc/iconv/lib/$(DEPDIR) libc/locale/$(DEPDIR) libc/machine/aarch64/$(DEPDIR) libc/machine/amdgcn/$(DEPDIR) libc/machine/arc/$(DEPDIR) libc/machine/arc64/$(DEPDIR) libc/machine/arm/$(DEPDIR) libc/machine/bfin/$(DEPDIR) libc/machine/cr16/$(DEPDIR) libc/machine/cris/$(DEPDIR) libc/machine/crx/$(DEPDIR) libc/machine/csky/$(DEPDIR) libc/machine/d10v/$(DEPDIR) libc/machine/d30v/$(DEPDIR) libc/machine/epiphany/$(DEPDIR) libc/machine/fr30/$(DEPDIR) libc/machine/frv/$(DEPDIR) libc/machine/ft32/$(DEPDIR) libc/machine/h8300/$(DEPDIR) libc/machine/h8500/$(DEPDIR) libc/machine/hppa/$(DEPDIR) libc/machine/i386/$(DEPDIR) libc/machine/i960/$(DEPDIR) libc/machine/iq2000/$(DEPDIR) libc/machine/lm32/$(DEPDIR) libc/machine/m32c/$(DEPDIR) libc/machine/m32r/$(DEPDIR) libc/machine/m68hc11/$(DEPDIR) libc/machine/m68k/$(DEPDIR) libc/machine/m88k/$(DEPDIR) libc/machine/mep/$(DEPDIR) libc/machine/microblaze/$(DEPDIR) libc/machine/mips/$(DEPDIR) libc/machine/mn10200/$(DEPDIR) libc/machine/mn10300/$(DEPDIR) libc/machine/moxie/$(DEPDIR) libc/machine/msp430/$(DEPDIR) libc/machine/mt/$(DEPDIR) libc/machine/nds32/$(DEPDIR) libc/machine/necv70/$(DEPDIR) libc/machine/nvptx/$(DEPDIR) libc/machine/or1k/$(DEPDIR) libc/machine/powerpc/$(DEPDIR) libc/machine/riscv/$(DEPDIR) libc/machine/rl78/$(DEPDIR) libc/machine/rx/$(DEPDIR) libc/machine/sh/$(DEPDIR) libc/machine/sparc/$(DEPDIR) libc/machine/spu/$(DEPDIR) libc/machine/tic4x/$(DEPDIR) libc/machine/tic6x/$(DEPDIR) libc/machine/tic80/$(DEPDIR) libc/machine/v850/$(DEPDIR) libc/machine/visium/$(DEPDIR) libc/machine/w65/$(DEPDIR) libc/machine/x86_64/$(DEPDIR) libc/machine/xc16x/$(DEPDIR) libc/machine/xstormy16/$(DEPDIR) libc/machine/xtensa/$(DEPDIR) libc/machine/z8k/$(DEPDIR) libc/misc/$(DEPDIR) libc/posix/$(DEPDIR) libc/reent/$(DEPDIR) libc/search/$(DEPDIR) libc/signal/$(DEPDIR) libc/ssp/$(DEPDIR) libc/stdio/$(DEPDIR) libc/stdio64/$(DEPDIR) libc/stdlib/$(DEPDIR) libc/string/$(DEPDIR) libc/sys/a29khif/$(DEPDIR) libc/sys/amdgcn/$(DEPDIR) libc/sys/arm/$(DEPDIR) libc/sys/d10v/$(DEPDIR) libc/sys/epiphany/$(DEPDIR) libc/sys/h8300hms/$(DEPDIR) libc/sys/h8500hms/$(DEPDIR) libc/sys/m88kbug/$(DEPDIR) libc/sys/mmixware/$(DEPDIR) libc/sys/netware/$(DEPDIR) libc/sys/or1k/$(DEPDIR) libc/sys/rdos/$(DEPDIR) libc/sys/rtems/$(DEPDIR) libc/sys/sh/$(DEPDIR) libc/sys/sysmec/$(DEPDIR) libc/sys/sysnec810/$(DEPDIR) libc/sys/sysnecv850/$(DEPDIR) libc/sys/sysvi386/$(DEPDIR) libc/sys/sysvnecv70/$(DEPDIR) libc/sys/textos/$(DEPDIR) libc/sys/tirtos/$(DEPDIR) libc/sys/w65/$(DEPDIR) libc/sys/z8ksim/$(DEPDIR) libc/syscalls/$(DEPDIR) libc/time/$(DEPDIR) libc/unix/$(DEPDIR) libc/xdr/$(DEPDIR) libm/common/$(DEPDIR) libm/complex/$(DEPDIR) libm/fenv/$(DEPDIR) libm/ld/$(DEPDIR) libm/ld128/$(DEPDIR) libm/ld80/$(DEPDIR) libm/machine/aarch64/$(DEPDIR) libm/machine/amdgcn/$(DEPDIR) libm/machine/arm/$(DEPDIR) libm/machine/i386/$(DEPDIR) libm/machine/mips/$(DEPDIR) libm/machine/nds32/$(DEPDIR) libm/machine/powerpc/$(DEPDIR) libm/machine/pru/$(DEPDIR) libm/machine/riscv/$(DEPDIR) libm/machine/sparc/$(DEPDIR) libm/machine/spu/$(DEPDIR) libm/machine/x86_64/$(DEPDIR) libm/machine/xtensa/$(DEPDIR) libm/math/$(DEPDIR) libm/mathfp/$(DEPDIR) libm/test/$(DEPDIR)
+	-rm -rf libc/argz/$(DEPDIR) libc/ctype/$(DEPDIR) libc/errno/$(DEPDIR) libc/iconv/ccs/$(DEPDIR) libc/iconv/ces/$(DEPDIR) libc/iconv/lib/$(DEPDIR) libc/locale/$(DEPDIR) libc/machine/aarch64/$(DEPDIR) libc/machine/amdgcn/$(DEPDIR) libc/machine/arc/$(DEPDIR) libc/machine/arc64/$(DEPDIR) libc/machine/arm/$(DEPDIR) libc/machine/bfin/$(DEPDIR) libc/machine/cr16/$(DEPDIR) libc/machine/cris/$(DEPDIR) libc/machine/crx/$(DEPDIR) libc/machine/csky/$(DEPDIR) libc/machine/d10v/$(DEPDIR) libc/machine/d30v/$(DEPDIR) libc/machine/epiphany/$(DEPDIR) libc/machine/fr30/$(DEPDIR) libc/machine/frv/$(DEPDIR) libc/machine/ft32/$(DEPDIR) libc/machine/h8300/$(DEPDIR) libc/machine/h8500/$(DEPDIR) libc/machine/hppa/$(DEPDIR) libc/machine/i386/$(DEPDIR) libc/machine/i960/$(DEPDIR) libc/machine/iq2000/$(DEPDIR) libc/machine/lm32/$(DEPDIR) libc/machine/m32c/$(DEPDIR) libc/machine/m32r/$(DEPDIR) libc/machine/m68hc11/$(DEPDIR) libc/machine/m68k/$(DEPDIR) libc/machine/m88k/$(DEPDIR) libc/machine/mep/$(DEPDIR) libc/machine/microblaze/$(DEPDIR) libc/machine/mips/$(DEPDIR) libc/machine/mn10200/$(DEPDIR) libc/machine/mn10300/$(DEPDIR) libc/machine/moxie/$(DEPDIR) libc/machine/msp430/$(DEPDIR) libc/machine/mt/$(DEPDIR) libc/machine/nds32/$(DEPDIR) libc/machine/necv70/$(DEPDIR) libc/machine/nvptx/$(DEPDIR) libc/machine/or1k/$(DEPDIR) libc/machine/powerpc/$(DEPDIR) libc/machine/riscv/$(DEPDIR) libc/machine/rl78/$(DEPDIR) libc/machine/rx/$(DEPDIR) libc/machine/sh/$(DEPDIR) libc/machine/sparc/$(DEPDIR) libc/machine/spu/$(DEPDIR) libc/machine/tic4x/$(DEPDIR) libc/machine/tic6x/$(DEPDIR) libc/machine/tic80/$(DEPDIR) libc/machine/v850/$(DEPDIR) libc/machine/visium/$(DEPDIR) libc/machine/w65/$(DEPDIR) libc/machine/x86_64/$(DEPDIR) libc/machine/xc16x/$(DEPDIR) libc/machine/xstormy16/$(DEPDIR) libc/machine/xtensa/$(DEPDIR) libc/machine/z8k/$(DEPDIR) libc/misc/$(DEPDIR) libc/posix/$(DEPDIR) libc/reent/$(DEPDIR) libc/search/$(DEPDIR) libc/signal/$(DEPDIR) libc/ssp/$(DEPDIR) libc/stdio/$(DEPDIR) libc/stdio64/$(DEPDIR) libc/stdlib/$(DEPDIR) libc/string/$(DEPDIR) libc/sys/a29khif/$(DEPDIR) libc/sys/amdgcn/$(DEPDIR) libc/sys/arm/$(DEPDIR) libc/sys/d10v/$(DEPDIR) libc/sys/epiphany/$(DEPDIR) libc/sys/h8300hms/$(DEPDIR) libc/sys/h8500hms/$(DEPDIR) libc/sys/m88kbug/$(DEPDIR) libc/sys/mmixware/$(DEPDIR) libc/sys/netware/$(DEPDIR) libc/sys/or1k/$(DEPDIR) libc/sys/rdos/$(DEPDIR) libc/sys/rtems/$(DEPDIR) libc/sys/sh/$(DEPDIR) libc/sys/sysmec/$(DEPDIR) libc/sys/sysnec810/$(DEPDIR) libc/sys/sysnecv850/$(DEPDIR) libc/sys/sysvi386/$(DEPDIR) libc/sys/sysvnecv70/$(DEPDIR) libc/sys/textos/$(DEPDIR) libc/sys/textos/wrapper/$(DEPDIR) libc/sys/tirtos/$(DEPDIR) libc/sys/w65/$(DEPDIR) libc/sys/z8ksim/$(DEPDIR) libc/syscalls/$(DEPDIR) libc/time/$(DEPDIR) libc/unix/$(DEPDIR) libc/xdr/$(DEPDIR) libm/common/$(DEPDIR) libm/complex/$(DEPDIR) libm/fenv/$(DEPDIR) libm/ld/$(DEPDIR) libm/ld128/$(DEPDIR) libm/ld80/$(DEPDIR) libm/machine/aarch64/$(DEPDIR) libm/machine/amdgcn/$(DEPDIR) libm/machine/arm/$(DEPDIR) libm/machine/i386/$(DEPDIR) libm/machine/mips/$(DEPDIR) libm/machine/nds32/$(DEPDIR) libm/machine/powerpc/$(DEPDIR) libm/machine/pru/$(DEPDIR) libm/machine/riscv/$(DEPDIR) libm/machine/sparc/$(DEPDIR) libm/machine/spu/$(DEPDIR) libm/machine/x86_64/$(DEPDIR) libm/machine/xtensa/$(DEPDIR) libm/math/$(DEPDIR) libm/mathfp/$(DEPDIR) libm/test/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-DEJAGNU distclean-compile \
 	distclean-generic distclean-hdr distclean-local distclean-tags
@@ -51001,7 +51054,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-	-rm -rf libc/argz/$(DEPDIR) libc/ctype/$(DEPDIR) libc/errno/$(DEPDIR) libc/iconv/ccs/$(DEPDIR) libc/iconv/ces/$(DEPDIR) libc/iconv/lib/$(DEPDIR) libc/locale/$(DEPDIR) libc/machine/aarch64/$(DEPDIR) libc/machine/amdgcn/$(DEPDIR) libc/machine/arc/$(DEPDIR) libc/machine/arc64/$(DEPDIR) libc/machine/arm/$(DEPDIR) libc/machine/bfin/$(DEPDIR) libc/machine/cr16/$(DEPDIR) libc/machine/cris/$(DEPDIR) libc/machine/crx/$(DEPDIR) libc/machine/csky/$(DEPDIR) libc/machine/d10v/$(DEPDIR) libc/machine/d30v/$(DEPDIR) libc/machine/epiphany/$(DEPDIR) libc/machine/fr30/$(DEPDIR) libc/machine/frv/$(DEPDIR) libc/machine/ft32/$(DEPDIR) libc/machine/h8300/$(DEPDIR) libc/machine/h8500/$(DEPDIR) libc/machine/hppa/$(DEPDIR) libc/machine/i386/$(DEPDIR) libc/machine/i960/$(DEPDIR) libc/machine/iq2000/$(DEPDIR) libc/machine/lm32/$(DEPDIR) libc/machine/m32c/$(DEPDIR) libc/machine/m32r/$(DEPDIR) libc/machine/m68hc11/$(DEPDIR) libc/machine/m68k/$(DEPDIR) libc/machine/m88k/$(DEPDIR) libc/machine/mep/$(DEPDIR) libc/machine/microblaze/$(DEPDIR) libc/machine/mips/$(DEPDIR) libc/machine/mn10200/$(DEPDIR) libc/machine/mn10300/$(DEPDIR) libc/machine/moxie/$(DEPDIR) libc/machine/msp430/$(DEPDIR) libc/machine/mt/$(DEPDIR) libc/machine/nds32/$(DEPDIR) libc/machine/necv70/$(DEPDIR) libc/machine/nvptx/$(DEPDIR) libc/machine/or1k/$(DEPDIR) libc/machine/powerpc/$(DEPDIR) libc/machine/riscv/$(DEPDIR) libc/machine/rl78/$(DEPDIR) libc/machine/rx/$(DEPDIR) libc/machine/sh/$(DEPDIR) libc/machine/sparc/$(DEPDIR) libc/machine/spu/$(DEPDIR) libc/machine/tic4x/$(DEPDIR) libc/machine/tic6x/$(DEPDIR) libc/machine/tic80/$(DEPDIR) libc/machine/v850/$(DEPDIR) libc/machine/visium/$(DEPDIR) libc/machine/w65/$(DEPDIR) libc/machine/x86_64/$(DEPDIR) libc/machine/xc16x/$(DEPDIR) libc/machine/xstormy16/$(DEPDIR) libc/machine/xtensa/$(DEPDIR) libc/machine/z8k/$(DEPDIR) libc/misc/$(DEPDIR) libc/posix/$(DEPDIR) libc/reent/$(DEPDIR) libc/search/$(DEPDIR) libc/signal/$(DEPDIR) libc/ssp/$(DEPDIR) libc/stdio/$(DEPDIR) libc/stdio64/$(DEPDIR) libc/stdlib/$(DEPDIR) libc/string/$(DEPDIR) libc/sys/a29khif/$(DEPDIR) libc/sys/amdgcn/$(DEPDIR) libc/sys/arm/$(DEPDIR) libc/sys/d10v/$(DEPDIR) libc/sys/epiphany/$(DEPDIR) libc/sys/h8300hms/$(DEPDIR) libc/sys/h8500hms/$(DEPDIR) libc/sys/m88kbug/$(DEPDIR) libc/sys/mmixware/$(DEPDIR) libc/sys/netware/$(DEPDIR) libc/sys/or1k/$(DEPDIR) libc/sys/rdos/$(DEPDIR) libc/sys/rtems/$(DEPDIR) libc/sys/sh/$(DEPDIR) libc/sys/sysmec/$(DEPDIR) libc/sys/sysnec810/$(DEPDIR) libc/sys/sysnecv850/$(DEPDIR) libc/sys/sysvi386/$(DEPDIR) libc/sys/sysvnecv70/$(DEPDIR) libc/sys/textos/$(DEPDIR) libc/sys/tirtos/$(DEPDIR) libc/sys/w65/$(DEPDIR) libc/sys/z8ksim/$(DEPDIR) libc/syscalls/$(DEPDIR) libc/time/$(DEPDIR) libc/unix/$(DEPDIR) libc/xdr/$(DEPDIR) libm/common/$(DEPDIR) libm/complex/$(DEPDIR) libm/fenv/$(DEPDIR) libm/ld/$(DEPDIR) libm/ld128/$(DEPDIR) libm/ld80/$(DEPDIR) libm/machine/aarch64/$(DEPDIR) libm/machine/amdgcn/$(DEPDIR) libm/machine/arm/$(DEPDIR) libm/machine/i386/$(DEPDIR) libm/machine/mips/$(DEPDIR) libm/machine/nds32/$(DEPDIR) libm/machine/powerpc/$(DEPDIR) libm/machine/pru/$(DEPDIR) libm/machine/riscv/$(DEPDIR) libm/machine/sparc/$(DEPDIR) libm/machine/spu/$(DEPDIR) libm/machine/x86_64/$(DEPDIR) libm/machine/xtensa/$(DEPDIR) libm/math/$(DEPDIR) libm/mathfp/$(DEPDIR) libm/test/$(DEPDIR)
+	-rm -rf libc/argz/$(DEPDIR) libc/ctype/$(DEPDIR) libc/errno/$(DEPDIR) libc/iconv/ccs/$(DEPDIR) libc/iconv/ces/$(DEPDIR) libc/iconv/lib/$(DEPDIR) libc/locale/$(DEPDIR) libc/machine/aarch64/$(DEPDIR) libc/machine/amdgcn/$(DEPDIR) libc/machine/arc/$(DEPDIR) libc/machine/arc64/$(DEPDIR) libc/machine/arm/$(DEPDIR) libc/machine/bfin/$(DEPDIR) libc/machine/cr16/$(DEPDIR) libc/machine/cris/$(DEPDIR) libc/machine/crx/$(DEPDIR) libc/machine/csky/$(DEPDIR) libc/machine/d10v/$(DEPDIR) libc/machine/d30v/$(DEPDIR) libc/machine/epiphany/$(DEPDIR) libc/machine/fr30/$(DEPDIR) libc/machine/frv/$(DEPDIR) libc/machine/ft32/$(DEPDIR) libc/machine/h8300/$(DEPDIR) libc/machine/h8500/$(DEPDIR) libc/machine/hppa/$(DEPDIR) libc/machine/i386/$(DEPDIR) libc/machine/i960/$(DEPDIR) libc/machine/iq2000/$(DEPDIR) libc/machine/lm32/$(DEPDIR) libc/machine/m32c/$(DEPDIR) libc/machine/m32r/$(DEPDIR) libc/machine/m68hc11/$(DEPDIR) libc/machine/m68k/$(DEPDIR) libc/machine/m88k/$(DEPDIR) libc/machine/mep/$(DEPDIR) libc/machine/microblaze/$(DEPDIR) libc/machine/mips/$(DEPDIR) libc/machine/mn10200/$(DEPDIR) libc/machine/mn10300/$(DEPDIR) libc/machine/moxie/$(DEPDIR) libc/machine/msp430/$(DEPDIR) libc/machine/mt/$(DEPDIR) libc/machine/nds32/$(DEPDIR) libc/machine/necv70/$(DEPDIR) libc/machine/nvptx/$(DEPDIR) libc/machine/or1k/$(DEPDIR) libc/machine/powerpc/$(DEPDIR) libc/machine/riscv/$(DEPDIR) libc/machine/rl78/$(DEPDIR) libc/machine/rx/$(DEPDIR) libc/machine/sh/$(DEPDIR) libc/machine/sparc/$(DEPDIR) libc/machine/spu/$(DEPDIR) libc/machine/tic4x/$(DEPDIR) libc/machine/tic6x/$(DEPDIR) libc/machine/tic80/$(DEPDIR) libc/machine/v850/$(DEPDIR) libc/machine/visium/$(DEPDIR) libc/machine/w65/$(DEPDIR) libc/machine/x86_64/$(DEPDIR) libc/machine/xc16x/$(DEPDIR) libc/machine/xstormy16/$(DEPDIR) libc/machine/xtensa/$(DEPDIR) libc/machine/z8k/$(DEPDIR) libc/misc/$(DEPDIR) libc/posix/$(DEPDIR) libc/reent/$(DEPDIR) libc/search/$(DEPDIR) libc/signal/$(DEPDIR) libc/ssp/$(DEPDIR) libc/stdio/$(DEPDIR) libc/stdio64/$(DEPDIR) libc/stdlib/$(DEPDIR) libc/string/$(DEPDIR) libc/sys/a29khif/$(DEPDIR) libc/sys/amdgcn/$(DEPDIR) libc/sys/arm/$(DEPDIR) libc/sys/d10v/$(DEPDIR) libc/sys/epiphany/$(DEPDIR) libc/sys/h8300hms/$(DEPDIR) libc/sys/h8500hms/$(DEPDIR) libc/sys/m88kbug/$(DEPDIR) libc/sys/mmixware/$(DEPDIR) libc/sys/netware/$(DEPDIR) libc/sys/or1k/$(DEPDIR) libc/sys/rdos/$(DEPDIR) libc/sys/rtems/$(DEPDIR) libc/sys/sh/$(DEPDIR) libc/sys/sysmec/$(DEPDIR) libc/sys/sysnec810/$(DEPDIR) libc/sys/sysnecv850/$(DEPDIR) libc/sys/sysvi386/$(DEPDIR) libc/sys/sysvnecv70/$(DEPDIR) libc/sys/textos/$(DEPDIR) libc/sys/textos/wrapper/$(DEPDIR) libc/sys/tirtos/$(DEPDIR) libc/sys/w65/$(DEPDIR) libc/sys/z8ksim/$(DEPDIR) libc/syscalls/$(DEPDIR) libc/time/$(DEPDIR) libc/unix/$(DEPDIR) libc/xdr/$(DEPDIR) libm/common/$(DEPDIR) libm/complex/$(DEPDIR) libm/fenv/$(DEPDIR) libm/ld/$(DEPDIR) libm/ld128/$(DEPDIR) libm/ld80/$(DEPDIR) libm/machine/aarch64/$(DEPDIR) libm/machine/amdgcn/$(DEPDIR) libm/machine/arm/$(DEPDIR) libm/machine/i386/$(DEPDIR) libm/machine/mips/$(DEPDIR) libm/machine/nds32/$(DEPDIR) libm/machine/powerpc/$(DEPDIR) libm/machine/pru/$(DEPDIR) libm/machine/riscv/$(DEPDIR) libm/machine/sparc/$(DEPDIR) libm/machine/spu/$(DEPDIR) libm/machine/x86_64/$(DEPDIR) libm/machine/xtensa/$(DEPDIR) libm/math/$(DEPDIR) libm/mathfp/$(DEPDIR) libm/test/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-aminfo \
 	maintainer-clean-generic maintainer-clean-local
