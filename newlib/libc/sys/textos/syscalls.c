@@ -52,6 +52,8 @@ syscall_ret(long ret)
   return ret;
 }
 
+extern long (**__sc_redir)(long, long, long, long, long, long);
+
 long
 syscall(long num, ...)
 {
@@ -66,7 +68,11 @@ syscall(long num, ...)
   long a6 = va_arg(ap, long);
   va_end(ap);
 
-  long r = __syscall(a0, a1, a2, a3, a4, a5, a6);
+  long r;
+  r = __sc_redir && __sc_redir[a0] // redir if needed
+          ? __sc_redir[a0](a1, a2, a3, a4, a5, a6)
+          : __syscall(a0, a1, a2, a3, a4, a5, a6);
+
   return syscall_ret(r);
 }
 
