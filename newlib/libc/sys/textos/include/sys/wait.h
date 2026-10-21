@@ -23,6 +23,10 @@ int wait4(pid_t pid, int *stat, int opt, void *rusage);
 pid_t wait(int *stat);
 pid_t waitpid(pid_t pid, int *stat, int opt);
 
+#ifdef _LIBC
+pid_t _wait (int *);
+#endif
+
 #define WEXITSTATUS(s)  (((s) & 0xff00) >> 8)
 #define WTERMSIG(s)     ((s) & 0x7f)
 #define WSTOPSIG(s)     WEXITSTATUS(s)
