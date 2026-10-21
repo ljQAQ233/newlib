@@ -580,6 +580,11 @@ extern "C" {
 
 #endif /* __CYGWIN__ */
 
+#ifdef __textos__
+#define _POSIX_VERSION  200809L
+#define _POSIX2_VERSION _POSIX_VERSION
+#endif /* __textos__ */
+
 #ifdef __cplusplus
 }
 #endif

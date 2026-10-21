@@ -568,7 +568,7 @@ case "${host}" in
 	sys_dir=textos
 	posix_dir=posix
 	have_crt0="no"
-	newlib_cflags="${newlib_cflags} -DHAVE_OPENDIR -DHAVE_NANOSLEEP -DHAVE_ISATTY -D_NO_POSIX_SPAWN"
+	newlib_cflags="${newlib_cflags} -DHAVE_OPENDIR -DHAVE_NANOSLEEP -DHAVE_ISATTY -D_NO_POSIX_SPAWN -D__textos__=1"
 	;;
   tic6x*)
 	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES"
