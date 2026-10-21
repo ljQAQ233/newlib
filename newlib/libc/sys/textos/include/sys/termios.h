@@ -110,6 +110,11 @@ struct winsize
 #define TCSADRAIN 1
 #define TCSAFLUSH 2
 
+#define TCOOFF 0
+#define TCOON  1
+#define TCIOFF 2
+#define TCION  3
+
 #define TCIFLUSH  0
 #define TCOFLUSH  1
 #define TCIOFLUSH 2
