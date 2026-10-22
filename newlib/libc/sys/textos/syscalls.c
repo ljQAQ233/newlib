@@ -692,6 +692,12 @@ umask(mode_t mask)
   return -1;
 }
 
+unsigned
+alarm(unsigned secs)
+{
+  return syscall(SYS_alarm, secs);
+}
+
 /* sys/time.h */
 int
 _gettimeofday(struct timeval* tp, void* restrict tzp)
