@@ -151,6 +151,12 @@ sigprocmask(int how, const sigset_t* set, sigset_t* oset)
 }
 
 int
+sigsuspend(const sigset_t* mask)
+{
+  return syscall(SYS_sigsuspend, mask);
+}
+
+int
 _kill(int pid, int sig)
 {
   return syscall(SYS_kill, pid, sig);
@@ -362,9 +368,10 @@ mknod(const char* path, mode_t mode, dev_t dev)
   return syscall(SYS_mknod, path, mode, dev);
 }
 
-int mkfifo(const char *path, mode_t mode)
+int
+mkfifo(const char* path, mode_t mode)
 {
-    return mknod(path, mode | S_IFIFO, 0);
+  return mknod(path, mode | S_IFIFO, 0);
 }
 
 int
