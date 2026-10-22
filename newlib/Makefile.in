@@ -631,7 +631,18 @@ check_PROGRAMS =
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/signal.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/sysconf.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/winit.c \
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/wutil.c
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/wutil.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/getcwd.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/pread.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/pwrite.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/sigset.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/ttyname.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/ttyname_r.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/basename.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/dirname.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/getlogin.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/getpwent.c \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/getut.c
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_63 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@am__append_64 = libc/sys/textos/crt1.o libc/sys/textos/crti.o libc/sys/textos/crtn.o
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__append_65 = libc/sys/tirtos/lock.c
@@ -1918,7 +1929,18 @@ am__objects_51 = libc/ssp/libc_a-chk_fail.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-signal.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-sysconf.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-winit.$(OBJEXT) \
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-wutil.$(OBJEXT)
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-wutil.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-getcwd.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-pread.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-pwrite.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-sigset.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-ttyname.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-ttyname_r.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-basename.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-dirname.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-getlogin.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-getpwent.$(OBJEXT) \
+@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-getut.$(OBJEXT)
 @HAVE_LIBC_SYS_TIRTOS_DIR_TRUE@am__objects_74 = libc/sys/tirtos/libc_a-lock.$(OBJEXT)
 @HAVE_LIBC_SYS_W65_DIR_TRUE@am__objects_75 = libc/sys/w65/libc_a-syscalls.$(OBJEXT) \
 @HAVE_LIBC_SYS_W65_DIR_TRUE@	libc/sys/w65/libc_a-trap.$(OBJEXT)
