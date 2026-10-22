@@ -362,6 +362,11 @@ mknod(const char* path, mode_t mode, dev_t dev)
   return syscall(SYS_mknod, path, mode, dev);
 }
 
+int mkfifo(const char *path, mode_t mode)
+{
+    return mknod(path, mode | S_IFIFO, 0);
+}
+
 int
 mount(const char* src, const char* dst)
 {
