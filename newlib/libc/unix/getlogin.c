@@ -13,7 +13,7 @@ getlogin ()
   int utmp_fd;
   struct utmp utmp_buf;
   static char buf[10];
-  extern char *ttyname ();
+  extern char *ttyname (int);
   char *tty;
 
   if ((tty = ttyname (0)) == 0)
