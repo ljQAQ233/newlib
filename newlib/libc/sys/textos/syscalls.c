@@ -289,7 +289,7 @@ lstat(const char* path, struct stat* sb)
 int
 _fstat(int fd, struct stat* sb)
 {
-  return syscall(SYS_fstat, sb);
+  return syscall(SYS_fstat, fd, sb);
 }
 
 int
