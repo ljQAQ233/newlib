@@ -12,7 +12,7 @@
 static struct passwd pw_passwd;	/* password structure */
 static FILE *passwd_fp;
 
-static char logname[8];
+static char logname[32];
 static char password[1024];
 static char gecos[1024];
 static char dir[1024];
