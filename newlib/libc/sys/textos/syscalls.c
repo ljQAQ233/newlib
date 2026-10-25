@@ -108,6 +108,12 @@ wait4(int pid, int* stat, int opt, void* rusage)
 }
 
 pid_t
+waitpid(pid_t pid, int* stat, int opt)
+{
+  return wait4(pid, stat, opt, 0);
+}
+
+pid_t
 _wait(int* status)
 {
   return wait4(-1, status, 0, NULL);
