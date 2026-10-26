@@ -19,6 +19,7 @@
 #include <bits/a-sc.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <poll.h>
 #include <reent.h>
 #include <signal.h>
@@ -452,8 +453,22 @@ readlink(const char* path, char* buf, size_t bufsize)
 char*
 getcwd(char* buf, size_t size)
 {
-  // syscall_ret will handle errno
-  return (char*)syscall(SYS_getcwd, buf, size);
+  char tmp[buf ? 1 : PATH_MAX];
+  if (!buf) {
+    buf = tmp;
+    size = sizeof tmp;
+  } else if (!size) {
+    errno = EINVAL;
+    return 0;
+  }
+  long ret = syscall(SYS_getcwd, buf, size);
+  if (ret < 0)
+    return 0;
+  if (ret == 0 || buf[0] != '/') {
+    errno = ENOENT;
+    return 0;
+  }
+  return buf == tmp ? strdup(buf) : buf;
 }
 
 int

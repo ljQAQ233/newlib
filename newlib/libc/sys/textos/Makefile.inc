@@ -2,7 +2,6 @@ libc_a_SOURCES += %D%/syscalls.c %D%/termios.c %D%/dir.c %D%/signal.c %D%/syscon
 libc_a_SOURCES += %D%/wrapper/winit.c %D%/wrapper/wutil.c
 
 libc_a_SOURCES += \
-    libc/unix/getcwd.c \
     libc/unix/pread.c \
     libc/unix/pwrite.c \
     libc/unix/sigset.c \

@@ -632,7 +632,6 @@ check_PROGRAMS =
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/sysconf.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/winit.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/wutil.c \
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/getcwd.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/pread.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/pwrite.c \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/sigset.c \
@@ -1930,7 +1929,6 @@ am__objects_51 = libc/ssp/libc_a-chk_fail.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/libc_a-sysconf.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-winit.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/sys/textos/wrapper/libc_a-wutil.$(OBJEXT) \
-@HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-getcwd.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-pread.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-pwrite.$(OBJEXT) \
 @HAVE_LIBC_SYS_TEXTOS_DIR_TRUE@	libc/unix/libc_a-sigset.$(OBJEXT) \
